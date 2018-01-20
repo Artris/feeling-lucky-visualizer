@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import ImageGridList from './ImageGridList';
 import config from './config';
 
 const spacing = 16;
@@ -88,9 +89,7 @@ class App extends Component {
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <div images={images} width={width}>
-                Images
-              </div>
+              <ImageGridList images={images} width={width} />
             </Paper>
           </Grid>
         </Grid>
