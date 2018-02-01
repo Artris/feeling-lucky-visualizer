@@ -25,11 +25,11 @@ const locations = rawData.map(house => `${house.latitude},${house.longitude}`);
 getDurations(locations)
   .then(durations => {
     return rawData.map((house, index) => {
-      const price = house.price.replace('$', '');
+      const price = +house.price.replace('$', '');
       const images = house.images.map(img => img.url);
       return Object.assign({}, house, {
         price,
-        images,
+        images: Array.from(new Set(images)),
         duration: durations[index]
       });
     });
