@@ -3,6 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import ImageGridList from './ImageGridList';
+import ScatterPlot from './ScatterPlot';
 import config from './config';
 
 const spacing = 16;
@@ -46,27 +47,44 @@ class App extends Component {
   }
 
   selectNode(index) {
-    this.setState({ selected: this.state.data[index] });
+    this.setState({ selected: this.props.data[index] });
   }
 
   getComponentWidth() {
+    let width;
     if (this.state.width < 960) {
       const whiteSpaceWidth = (style.paper.margin + style.paper.padding) * 2;
-      return this.state.width - whiteSpaceWidth;
+      width = this.state.width - whiteSpaceWidth;
     } else {
       const whiteSpaceWidth =
         spacing + (style.paper.margin + style.paper.padding) * 4;
-      return (this.state.width - whiteSpaceWidth) / 2;
+      width = (this.state.width - whiteSpaceWidth) / 2;
     }
+    return width < 0 ? 0 : width;
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, data } = this.props;
     const width = this.getComponentWidth();
 
     const destination = config.destination;
     const { images, latitude, longitude } = this.state.selected;
     const origin = { latitude, longitude };
+
+    const scatterPlotData = data.map((item, index) => {
+      return {
+        x: item.duration,
+        y: item.price,
+        link: item.link,
+        onHover: () => {
+          this.selectNode(index);
+        },
+        onClick: () => {
+          window.open(item.link);
+        }
+      };
+    });
+    const scatterPlotHeight = width / 2;
 
     return (
       <div className={classes.root}>
@@ -75,7 +93,10 @@ class App extends Component {
             <Grid container spacing={spacing}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <div width={width}>Graph</div>
+                  <ScatterPlot
+                    extent={{ width, height: scatterPlotHeight }}
+                    data={scatterPlotData}
+                  />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
