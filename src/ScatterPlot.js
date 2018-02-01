@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-const margin = { top: 10, bottom: 60, left: 60, right: 10 };
+const margin = { top: 10, bottom: 60, left: 80, right: 10 };
 
 class ScatterPlot extends Component {
   constructor(props) {
     super(props);
     this.draw = this.draw.bind(this);
-    this.setScale = this.updateScale.bind(this);
+    this.updateScale = this.updateScale.bind(this);
   }
 
   componentWillMount() {
@@ -30,10 +30,24 @@ class ScatterPlot extends Component {
       .append('g')
       .attr('class', 'x axis');
 
+    this.xAxisLabel = this.xAxis
+      .append('text')
+      .text('Travel Time')
+      .style('fill', 'black')
+      .style('font-size', '2em');
+
     this.yAxis = d3
       .select(this.root)
       .append('g')
       .attr('class', 'y axis');
+
+    this.yAxisLabel = this.yAxis
+      .append('text')
+      .text('Price')
+      .style('fill', 'black')
+      .style('text-anchor', 'middle')
+      .style('font-size', '2em');
+
     this.draw();
   }
 
@@ -90,6 +104,7 @@ class ScatterPlot extends Component {
         'translate(' + margin.left + ',' + (this.height + margin.top) + ')'
       )
       .call(this.axisBottom);
+    this.xAxisLabel.attr('x', this.width / 2).attr('y', 2 * margin.bottom / 3);
 
     /**
      * y axis
@@ -97,6 +112,15 @@ class ScatterPlot extends Component {
     this.yAxis
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
       .call(this.axisLeft);
+    this.yAxisLabel.attr(
+      'transform',
+      'translate(' +
+        -margin.left / 2 +
+        ',' +
+        this.height / 2 +
+        ')' +
+        'rotate(-90)'
+    );
   }
 
   render() {
