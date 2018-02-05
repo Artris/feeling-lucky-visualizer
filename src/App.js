@@ -5,6 +5,7 @@ import Grid from 'material-ui/Grid';
 import ImageGridList from './ImageGridList';
 import ScatterPlot from './ScatterPlot';
 import config from './config';
+import Map from './Map'
 
 const spacing = 16;
 const style = {
@@ -101,16 +102,16 @@ class App extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <div origin={origin} destination={destination} width={width}>
-                    Map
-                  </div>
+                  <Map
+                    origin={origin} destination={destination} width={width}
+                  />
                 </Paper>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <ImageGridList images={images} width={width} />
+              <ImageGridList images={images} width={width}/>
             </Paper>
           </Grid>
         </Grid>
