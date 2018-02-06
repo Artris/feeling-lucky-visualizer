@@ -14,8 +14,8 @@ class ScatterPlot extends Component {
     this.updateScale(this.props);
   }
 
-  componentWillReceiveProps(props) {
-    this.updateScale(props);
+  componentDidUpdate() {
+    this.updateScale(this.props);
     this.draw();
   }
 
@@ -91,7 +91,10 @@ class ScatterPlot extends Component {
       .attr('cy', d => this.y(d.y))
       .on('mouseover', d => d.onHover())
       .on('click', (d, i) => d.onClick())
-      .style('fill', 'rgba(255, 128, 0, 0.5)');
+      .style(
+        'fill',
+        d => (d.visited ? 'rgba(128, 128, 128, 0.5)' : 'rgba(255, 128, 0, 0.5)')
+      );
 
     items.exit().remove();
 

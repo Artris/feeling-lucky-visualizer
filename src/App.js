@@ -5,7 +5,7 @@ import Grid from 'material-ui/Grid';
 import ImageGridList from './ImageGridList';
 import ScatterPlot from './ScatterPlot';
 import config from './config';
-import Map from './Map'
+import Map from './Map';
 
 const spacing = 16;
 const style = {
@@ -28,10 +28,16 @@ const styles = theme => style;
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { width: 0, height: 0, selected: this.props.data[0] };
+    this.state = {
+      width: 0,
+      height: 0,
+      selected: this.props.data[0],
+      visited: []
+    };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.getComponentWidth = this.getComponentWidth.bind(this);
     this.selectNode = this.selectNode.bind(this);
+    this.visitNode = this.visitNode.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +57,16 @@ class App extends Component {
     this.setState({ selected: this.props.data[index] });
   }
 
+  visitNode(index) {
+    const node = this.props.data[index];
+    const visitedNodesSoFar = this.state.visited;
+
+    this.setState({
+      visited: [...new Set([...visitedNodesSoFar, node.link])]
+    });
+    window.open(node.link);
+  }
+
   getComponentWidth() {
     let width;
     if (this.state.width < 960) {
@@ -67,6 +83,7 @@ class App extends Component {
   render() {
     const { classes, data } = this.props;
     const width = this.getComponentWidth();
+    const visitedNodesSoFar = this.state.visited;
 
     const destination = config.destination;
     const { images, latitude, longitude } = this.state.selected;
@@ -77,11 +94,12 @@ class App extends Component {
         x: item.duration,
         y: item.price,
         link: item.link,
+        visited: visitedNodesSoFar.includes(item.link),
         onHover: () => {
           this.selectNode(index);
         },
         onClick: () => {
-          window.open(item.link);
+          this.visitNode(index);
         }
       };
     });
@@ -103,7 +121,9 @@ class App extends Component {
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
                   <Map
-                    origin={origin} destination={destination} width={width}
+                    origin={origin}
+                    destination={destination}
+                    width={width}
                   />
                 </Paper>
               </Grid>
@@ -111,7 +131,7 @@ class App extends Component {
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <ImageGridList images={images} width={width}/>
+              <ImageGridList images={images} width={width} />
             </Paper>
           </Grid>
         </Grid>
