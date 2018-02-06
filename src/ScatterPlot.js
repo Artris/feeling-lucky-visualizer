@@ -67,7 +67,7 @@ class ScatterPlot extends Component {
     this.axisBottom = d3
       .axisBottom(this.x)
       .ticks(2)
-      .tickFormat(d => `${Math.floor(d / 3600)}h`);
+      .tickFormat(d => `${(d / 3600).toFixed(1)}h`);
     this.axisLeft = d3
       .axisLeft(this.y)
       .ticks(2)
