@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { selectNode, visitNode } from '../actions';
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import ImageGridList from './ImageGridList';
-import ScatterPlot from './ScatterPlot';
-import config from './config';
-import Map from './Map';
+
+import ImageGridList from '../components/ImageGridList';
+import ScatterPlot from '../components/ScatterPlot';
+import GoogleMap from '../components/GoogleMap';
 
 const spacing = 16;
 const style = {
@@ -28,16 +31,9 @@ const styles = theme => style;
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      width: 0,
-      height: 0,
-      selected: this.props.data[0],
-      visited: []
-    };
+    this.state = { width: 0, height: 0 };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.getComponentWidth = this.getComponentWidth.bind(this);
-    this.selectNode = this.selectNode.bind(this);
-    this.visitNode = this.visitNode.bind(this);
   }
 
   componentDidMount() {
@@ -51,20 +47,6 @@ class App extends Component {
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-  }
-
-  selectNode(index) {
-    this.setState({ selected: this.props.data[index] });
-  }
-
-  visitNode(index) {
-    const node = this.props.data[index];
-    const visitedNodesSoFar = this.state.visited;
-
-    this.setState({
-      visited: [...new Set([...visitedNodesSoFar, node.link])]
-    });
-    window.open(node.link);
   }
 
   getComponentWidth() {
@@ -81,12 +63,13 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props);
     const { classes, data } = this.props;
+    const { activeNode, visitedNodes } = this.props;
     const width = this.getComponentWidth();
-    const visitedNodesSoFar = this.state.visited;
 
-    const destination = config.destination;
-    const { images, latitude, longitude } = this.state.selected;
+    const destination = this.props.destination;
+    const { images, latitude, longitude } = data[activeNode];
     const origin = { latitude, longitude };
 
     const scatterPlotData = data.map((item, index) => {
@@ -94,12 +77,13 @@ class App extends Component {
         x: item.duration,
         y: item.price,
         link: item.link,
-        visited: visitedNodesSoFar.includes(item.link),
+        visited: visitedNodes.includes(item.link),
         onHover: () => {
-          this.selectNode(index);
+          this.props.onHover(index);
         },
         onClick: () => {
-          this.visitNode(index);
+          this.props.onClick(item.link);
+          window.open(item.link);
         }
       };
     });
@@ -120,7 +104,7 @@ class App extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <Map
+                  <GoogleMap
                     origin={origin}
                     destination={destination}
                     width={width}
@@ -140,4 +124,15 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+const mapStateToProps = (state, ownProps) => ({ ...state });
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onClick: id => dispatch(visitNode(id)),
+    onHover: index => dispatch(selectNode(index))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(App)
+);
