@@ -9,7 +9,7 @@ const data = (state = [], action) => {
   }
 };
 
-const activeNode = (state = 0, action) => {
+const activeNode = (state = {}, action) => {
   switch (action.type) {
     case 'SELECT_NODE':
       return action.node;

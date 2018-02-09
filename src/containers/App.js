@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { selectNode, visitNode } from '../actions';
 
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
-import ImageGridList from '../components/ImageGridList';
-import ScatterPlot from '../components/ScatterPlot';
-import GoogleMap from '../components/GoogleMap';
+import PriceByTravelDurationScatterPlot from './PriceByTravelDurationScatterPlot';
+import ShortestDistanceMap from './ShortestDistanceMap';
+import ImageGrid from './ImageGrid';
 
 const spacing = 16;
 const style = {
@@ -63,31 +61,8 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props);
-    const { classes, data } = this.props;
-    const { activeNode, visitedNodes } = this.props;
+    const { classes } = this.props;
     const width = this.getComponentWidth();
-
-    const destination = this.props.destination;
-    const { images, latitude, longitude } = data[activeNode];
-    const origin = { latitude, longitude };
-
-    const scatterPlotData = data.map((item, index) => {
-      return {
-        x: item.duration,
-        y: item.price,
-        link: item.link,
-        visited: visitedNodes.includes(item.link),
-        onHover: () => {
-          this.props.onHover(index);
-        },
-        onClick: () => {
-          this.props.onClick(item.link);
-          window.open(item.link);
-        }
-      };
-    });
-    const scatterPlotHeight = width / 2;
 
     return (
       <div className={classes.root}>
@@ -96,26 +71,19 @@ class App extends Component {
             <Grid container spacing={spacing}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <ScatterPlot
-                    extent={{ width, height: scatterPlotHeight }}
-                    data={scatterPlotData}
-                  />
+                  <PriceByTravelDurationScatterPlot width={width} />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <GoogleMap
-                    origin={origin}
-                    destination={destination}
-                    width={width}
-                  />
+                  <ShortestDistanceMap width={width} />
                 </Paper>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <ImageGridList images={images} width={width} />
+              <ImageGrid width={width} />
             </Paper>
           </Grid>
         </Grid>
@@ -124,15 +92,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({ ...state });
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onClick: id => dispatch(visitNode(id)),
-    onHover: index => dispatch(selectNode(index))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(App)
-);
+export default withStyles(styles)(App);
