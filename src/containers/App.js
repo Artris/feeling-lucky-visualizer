@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import ImageGridList from './ImageGridList';
-import ScatterPlot from './ScatterPlot';
-import config from './config';
-import Map from './Map';
+
+import PriceByTravelDurationScatterPlot from './PriceByTravelDurationScatterPlot';
+import ShortestDistanceMap from './ShortestDistanceMap';
+import ImageGrid from './ImageGrid';
 
 const spacing = 16;
 const style = {
@@ -28,16 +29,9 @@ const styles = theme => style;
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      width: 0,
-      height: 0,
-      selected: this.props.data[0],
-      visited: []
-    };
+    this.state = { width: 0, height: 0 };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.getComponentWidth = this.getComponentWidth.bind(this);
-    this.selectNode = this.selectNode.bind(this);
-    this.visitNode = this.visitNode.bind(this);
   }
 
   componentDidMount() {
@@ -51,20 +45,6 @@ class App extends Component {
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-  }
-
-  selectNode(index) {
-    this.setState({ selected: this.props.data[index] });
-  }
-
-  visitNode(index) {
-    const node = this.props.data[index];
-    const visitedNodesSoFar = this.state.visited;
-
-    this.setState({
-      visited: [...new Set([...visitedNodesSoFar, node.link])]
-    });
-    window.open(node.link);
   }
 
   getComponentWidth() {
@@ -81,29 +61,8 @@ class App extends Component {
   }
 
   render() {
-    const { classes, data } = this.props;
+    const { classes } = this.props;
     const width = this.getComponentWidth();
-    const visitedNodesSoFar = this.state.visited;
-
-    const destination = config.destination;
-    const { images, latitude, longitude } = this.state.selected;
-    const origin = { latitude, longitude };
-
-    const scatterPlotData = data.map((item, index) => {
-      return {
-        x: item.duration,
-        y: item.price,
-        link: item.link,
-        visited: visitedNodesSoFar.includes(item.link),
-        onHover: () => {
-          this.selectNode(index);
-        },
-        onClick: () => {
-          this.visitNode(index);
-        }
-      };
-    });
-    const scatterPlotHeight = width / 2;
 
     return (
       <div className={classes.root}>
@@ -112,26 +71,19 @@ class App extends Component {
             <Grid container spacing={spacing}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <ScatterPlot
-                    extent={{ width, height: scatterPlotHeight }}
-                    data={scatterPlotData}
-                  />
+                  <PriceByTravelDurationScatterPlot width={width} />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <Map
-                    origin={origin}
-                    destination={destination}
-                    width={width}
-                  />
+                  <ShortestDistanceMap width={width} />
                 </Paper>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <ImageGridList images={images} width={width} />
+              <ImageGrid width={width} />
             </Paper>
           </Grid>
         </Grid>

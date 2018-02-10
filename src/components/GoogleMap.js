@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { GoogleApiWrapper } from "google-maps-react";
-import config from "./config.json";
-import ReactDOM from "react-dom";
+import React, { Component } from 'react';
+import { GoogleApiWrapper } from 'google-maps-react';
+import config from '../config.json';
+import ReactDOM from 'react-dom';
 
-export class Map extends Component {
+export class GoogleMap extends Component {
   componentDidUpdate(prevProps) {
     let { origin, width, google } = prevProps;
     if (
@@ -25,7 +25,7 @@ export class Map extends Component {
       this.map = new maps.Map(node, {
         scrollwheel: false,
         zoom: 14,
-        gestureHandling: "cooperative"
+        gestureHandling: 'cooperative'
       });
 
       const directionsService = new google.maps.DirectionsService();
@@ -39,11 +39,11 @@ export class Map extends Component {
           destination.latitude,
           destination.longitude
         ),
-        travelMode: "TRANSIT"
+        travelMode: 'TRANSIT'
       };
 
       directionsService.route(request, function(result, status) {
-        if (status === "OK") {
+        if (status === 'OK') {
           directionsDisplay.setDirections(result);
         }
       });
@@ -62,4 +62,4 @@ export class Map extends Component {
 
 export default GoogleApiWrapper({
   apiKey: config.key
-})(Map);
+})(GoogleMap);
