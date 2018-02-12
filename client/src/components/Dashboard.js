@@ -4,19 +4,19 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
-import PriceByTravelDurationScatterPlot from './PriceByTravelDurationScatterPlot';
-import ShortestDistanceMap from './ShortestDistanceMap';
-import ImageGrid from './ImageGrid';
+import PriceByTravelDurationScatterPlot from '../containers/PriceByTravelDurationScatterPlot';
+import ShortestDistanceMap from '../containers/ShortestDistanceMap';
+import ImageGrid from '../containers/ImageGrid';
 
 const spacing = 16;
 const style = {
   root: {
-    flexGrow: 1,
-    marginTop: 30
+    flexGrow: 1
   },
   paper: {
     padding: 10,
     margin: 10,
+    marginTop: 20,
     textAlign: 'center'
   }
 };
@@ -32,6 +32,7 @@ class App extends Component {
     this.state = { width: 0, height: 0 };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.getComponentWidth = this.getComponentWidth.bind(this);
+    this.getComponentMaxHeight = this.getComponentMaxHeight.bind(this);
   }
 
   componentDidMount() {
@@ -60,9 +61,15 @@ class App extends Component {
     return width < 0 ? 0 : width;
   }
 
+  getComponentMaxHeight() {
+    let height = this.state.height - 200;
+    return Math.max(height / 2, 280);
+  }
+
   render() {
     const { classes } = this.props;
     const width = this.getComponentWidth();
+    const maxHeight = this.getComponentMaxHeight();
 
     return (
       <div className={classes.root}>
@@ -71,20 +78,27 @@ class App extends Component {
             <Grid container spacing={spacing}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <PriceByTravelDurationScatterPlot width={width} />
+                  <PriceByTravelDurationScatterPlot
+                    width={width}
+                    maxHeight={maxHeight}
+                  />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <ShortestDistanceMap width={width} />
+                  <ImageGrid width={width} maxHeight={maxHeight} />
                 </Paper>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper className={classes.paper}>
-              <ImageGrid width={width} />
-            </Paper>
+            <Grid container spacing={spacing}>
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  <ShortestDistanceMap width={width} maxHeight={maxHeight} />
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>

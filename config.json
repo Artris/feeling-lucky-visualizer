@@ -1,0 +1,32 @@
+{
+  "key": "Google Maps API Key",
+  "bot": {
+    "path": "URL without parameters",
+    "params": {},
+    "lv1-selectors": {
+      "links": {
+        "listItem": "Item URL selector",
+        "data": {
+          "url": {
+            "attr": "href"
+          }
+        }
+      },
+      "next": {
+        "selector": "Next page URL selector",
+        "attr": "href"
+      }
+    },
+    "lv0-selectors": {
+      "price": "Price selector",
+      "images": {
+        "listItem": "Image URL selector",
+        "data": {
+          "url": {
+            "attr": "href"
+          }
+        }
+      }
+    }
+  }
+}

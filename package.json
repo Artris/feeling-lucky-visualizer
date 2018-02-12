@@ -1,22 +1,20 @@
 {
-  "name": "feeling-lucky-visualizer",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "d3": "^4.13.0",
-    "google-maps-react": "^1.1.2",
-    "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.29",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-scripts": "1.1.0",
-    "redux": "^3.7.2"
-  },
+  "name": "feeling-lucky-visualizer-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node process-data.js && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "client": "cd client && npm start",
+    "server": "node index.js",
+    "bot": "node simple-bot.js",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "build-url": "^1.0.10",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "lodash": "^4.17.5",
+    "node-fetch": "^2.0.0",
+    "scrape-it": "^5.0.2"
   }
 }

@@ -17,9 +17,9 @@ const tileSpacing = 4;
 const numberOfColumns = 2;
 
 function ImageGridList(props) {
-  const { classes, images, width } = props;
+  const { classes, images, width, maxHeight } = props;
   const numberOfRows = Math.ceil(images.length / numberOfColumns);
-  const height = Math.min(width, (cellHeight + tileSpacing) * numberOfRows);
+  const height = Math.min(maxHeight, (cellHeight + tileSpacing) * numberOfRows);
 
   return (
     <div className={classes.root}>

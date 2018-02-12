@@ -5,11 +5,12 @@ import ReactDOM from 'react-dom';
 
 export class GoogleMap extends Component {
   componentDidUpdate(prevProps) {
-    let { origin, width, google } = prevProps;
+    let { origin, width, maxHeight, google } = prevProps;
     if (
-      (google !== this.props.google || //initial setup
-        origin !== this.props.origin) && //when origin changes
-      this.props.width === width //when width changes
+      (google !== this.props.google || // initial setup
+        origin !== this.props.origin) && // when origin changes
+      this.props.width === width && // when width changes
+      this.props.maxHeight === maxHeight
     ) {
       this.loadMap();
     }
@@ -53,7 +54,7 @@ export class GoogleMap extends Component {
   render() {
     const style = {
       width: this.props.width,
-      height: 400
+      height: this.props.maxHeight
     };
 
     return <div ref="map" style={style} />;

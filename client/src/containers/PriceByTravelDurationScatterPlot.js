@@ -5,9 +5,16 @@ import ScatterPlot from '../components/ScatterPlot';
 
 class PriceByTravelDurationScatterPlot extends Component {
   render() {
-    const { data, onHover, onClick, width, visitedNodes } = this.props;
+    const {
+      nodes,
+      onHover,
+      onClick,
+      width,
+      visitedNodes,
+      maxHeight
+    } = this.props;
 
-    const scatterPlotData = data.map((item, index) => {
+    const scatterPlotData = nodes.map((item, index) => {
       return {
         x: item.duration,
         y: item.price,
@@ -21,21 +28,21 @@ class PriceByTravelDurationScatterPlot extends Component {
       };
     });
 
-    const height = width / 2;
+    const height = maxHeight;
 
     return <ScatterPlot extent={{ width, height }} data={scatterPlotData} />;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { data, visitedNodes } = state;
-  return { data, visitedNodes };
+  const { nodes, visitedNodes } = state;
+  return { nodes, visitedNodes };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick: id => dispatch(visitNode(id)),
-    onHover: index => dispatch(selectNode(index))
+    onHover: node => dispatch(selectNode(node))
   };
 };
 
