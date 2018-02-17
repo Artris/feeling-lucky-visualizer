@@ -1,4 +1,5 @@
 export const SET_DATA = 'SET_DATA';
+export const REQUEST_FAILED = 'REQUEST_FAILED';
 export const SELECT_NODE = 'SELECT_NODE';
 export const VISIT_NODE = 'VISIT_NODE';
 export const REQUEST_DATA = 'REQUEST_DATA';
@@ -18,6 +19,10 @@ export const visitNode = id => ({
   node: id
 });
 
+export const setErrorFlag = () => ({
+  type: REQUEST_FAILED
+});
+
 const requestData = () => ({ type: REQUEST_DATA });
 
 export const fetchData = address => {
@@ -25,8 +30,13 @@ export const fetchData = address => {
     dispatch(requestData());
     return fetch(`/api/items?destination=${address}`)
       .then(response => response.json())
-      .then(({ nodes, destination }) => {
-        dispatch(setData({ nodes, destination }));
-      });
+      .then(({ nodes, destination, error }) => {
+        if (error) {
+          dispatch(setErrorFlag());
+        } else {
+          dispatch(setData({ nodes, destination }));
+        }
+      })
+      .catch(err => dispatch(setErrorFlag()));
   };
 };
