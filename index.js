@@ -31,9 +31,10 @@ function getDurations(origins, destination) {
           rows.map(row => {
             const duration = row.elements[0].duration;
             // duration is undefined if there is no route to the destination
-            return duration === undefined ? null : duration.value;
+            return duration === undefined ? undefined : duration.value;
           })
         )
+        .catch(err => Array(origins.length).fill(undefined))
     )
   ).then(durationGroups => _.flatten(durationGroups));
 }
@@ -54,34 +55,38 @@ function injectDuration(data, durations) {
   });
 }
 
-function filterDataWithMissingData(data) {
-  return data.filter(item => item.duration !== null);
+function filterDataWithMissingDuration(data) {
+  return data.filter(item => item.duration !== undefined);
 }
 
 //Passing the API key from backend
 app.get('/key', (req, res) => {
   res.json(key);
-})
+});
 
 app.get('/api/items', (req, res) => {
-  getDestination(req.query.destination).then(des => {
-    getDurations(origins, des)
-      .then(durations => {
-        // here we have access to both geocoding of the destination and the durations
-        const dataZippedWithDuration = injectDuration(data, durations);
-        const itemsWithDuration = filterDataWithMissingData(
-          dataZippedWithDuration
-        );
+  getDestination(req.query.destination)
+    .then(des => {
+      getDurations(origins, des)
+        .then(durations => {
+          // here we have access to both geocoding of the destination and the durations
+          const dataZippedWithDuration = injectDuration(data, durations);
+          const itemsWithDuration = filterDataWithMissingDuration(
+            dataZippedWithDuration
+          );
 
-        res.json({
-          nodes: itemsWithDuration,
-          destination: { latitude: des.lat, longitude: des.lng }
+          res.json({
+            nodes: itemsWithDuration,
+            destination: { latitude: des.lat, longitude: des.lng }
+          });
+        })
+        .catch(err => {
+          res.status(404).json({ error: 'Something went wrong' });
         });
-      })
-      .catch(err => {
-        res.status(404).json({ error: 'Something went wrong' });
-      });
-  });
+    })
+    .catch(err => {
+      res.status(404).json({ error: 'Something went wrong' });
+    });
 });
 
 const port = process.env.PORT || 5000;

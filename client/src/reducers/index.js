@@ -1,4 +1,10 @@
-import { SET_DATA, SELECT_NODE, VISIT_NODE, REQUEST_DATA } from '../actions';
+import {
+  SET_DATA,
+  SELECT_NODE,
+  VISIT_NODE,
+  REQUEST_DATA,
+  REQUEST_FAILED
+} from '../actions';
 
 const rootReducer = (
   state = {
@@ -37,6 +43,12 @@ const rootReducer = (
     case VISIT_NODE:
       return Object.assign({}, state, {
         visitedNodes: [...state.visitedNodes, action.node]
+      });
+    case REQUEST_FAILED:
+      return Object.assign({}, state, {
+        isFecthing: false,
+        fetched: false,
+        error: true
       });
     default:
       return state;
