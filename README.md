@@ -4,7 +4,7 @@ A simple visualization app that uses React + D3 to help students find a place cl
 
 ## How to get started
 
-First, you need to update the `config.json` file and provide a target URL and the CSS selectors you care about.
+First, you need to update the `config.json` file and provide your Google Maps API key, a target URL and the CSS selectors you care about.
 
 * You should familiarize yourself with _attr_, _selector_, and _listItem_ parameters of [scrape-it](https://github.com/IonicaBizau/scrape-it)
 * You have to be careful when adding the CSS selectors.
@@ -18,7 +18,7 @@ npm run bot
 
 which scrapes all the data you specified in the `config.json` file into a list and writes it into `data.json`
 
-Next, add your Google Maps API key to `config.json` and run the app
+Next, run the app
 
 ```js
 npm start
@@ -36,7 +36,6 @@ Now when the client sends a get request to `/api/items` specifying the destinati
     "link": "link to the original posting",
     "duration": 3600
   }
-  // ...
 ]
 ```
 
