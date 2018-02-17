@@ -7,8 +7,8 @@ A simple visualization app that uses React + D3 to help students find a place cl
 First, you need to update the `config.json` file and provide a target URL and the CSS selectors you care about.
 
 * You should familiarize yourself with _attr_, _selector_, and _listItem_ parameters of [scrape-it](https://github.com/IonicaBizau/scrape-it)
-* You have to be careful when adding the CSS selectors!
-  If there are multiple dom elements matching the same selector but you only need one element, this can cause unexpected behaviour
+* You have to be careful when adding the CSS selectors.
+  There may be multiple dom elements matching the same selector when you only need one element. This can cause unexpected behaviour
 
 You can then run the bot,
 
