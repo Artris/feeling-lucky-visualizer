@@ -23,7 +23,7 @@ const App = props => {
     elm = wrapInNotice(<p className="notice-text">Select your destination</p>);
   } else if (nodata === true) {
     elm = wrapInNotice(
-      <p className="notice-text">No avalibale houses for this destination</p>
+      <p className="notice-text">No available houses for this destination</p>
     );
   } else {
     elm = <Dashboard />;

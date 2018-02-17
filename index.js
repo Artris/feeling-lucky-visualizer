@@ -58,6 +58,11 @@ function filterDataWithMissingData(data) {
   return data.filter(item => item.duration !== null);
 }
 
+//Passing the API key from backend
+app.get('/key', (req, res) => {
+  res.json(key);
+})
+
 app.get('/api/items', (req, res) => {
   getDestination(req.query.destination).then(des => {
     getDurations(origins, des)
@@ -74,7 +79,7 @@ app.get('/api/items', (req, res) => {
         });
       })
       .catch(err => {
-        res.status(404).json({ error: 'something went wrong' });
+        res.status(404).json({ error: 'Something went wrong' });
       });
   });
 });

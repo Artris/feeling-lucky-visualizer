@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { GoogleApiWrapper } from 'google-maps-react';
-import config from '../config.json';
 import ReactDOM from 'react-dom';
 
 export class GoogleMap extends Component {
+  state = { key: "" }
+  componentWillMount(){
+    this.fetchKey();
+  }
+
   componentDidUpdate(prevProps) {
     let { origin, width, maxHeight, google } = prevProps;
     if (
@@ -14,6 +18,14 @@ export class GoogleMap extends Component {
     ) {
       this.loadMap();
     }
+  }
+
+  fetchKey(){
+    //Geting the key and storing it in the state.
+    fetch('/key')
+    .then(res => res.json())
+    .then(key => this.setState({key}))
+    .catch(err => console.log(err));
   }
 
   loadMap() {
@@ -62,5 +74,5 @@ export class GoogleMap extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: config.key
+  apiKey: this.state
 })(GoogleMap);
