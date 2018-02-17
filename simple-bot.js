@@ -57,25 +57,13 @@ function isAValidItem(item) {
   return !hasMissingValue;
 }
 
-/**
- * you might have to change this function if you update the config.json
- */
-function clean(items) {
-  return items.map(item => {
-    return Object.assign({}, item, {
-      price: +item.price.replace('$', ''),
-      images: item.images.map(img => img.url)
-    });
-  });
-}
-
 collectLinks(baseURL)
   .then(links => collectItems(links))
   .then(items => items.filter(item => isAValidItem(item)))
-  .then(items => clean(items))
   .catch(err => console.log(err))
   .then(data => {
-    fs.writeFile('./data.json', JSON.stringify(data), 'utf8', err =>
-      console.log(err)
-    );
+    fs.writeFile('./raw-data.json', JSON.stringify(data), 'utf8', err => {
+      if (err) throw err;
+      console.log(`extracted ${data.length} items successfully`);
+    });
   });
