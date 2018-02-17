@@ -6,8 +6,9 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "node index.js",
-    "bot": "node simple-bot.js",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "bot": "node simple-bot.js && node pre-process.js",
+    "start":
+      "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "build-url": "^1.0.10",
