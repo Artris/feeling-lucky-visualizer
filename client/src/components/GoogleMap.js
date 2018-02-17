@@ -3,7 +3,7 @@ import { GoogleApiWrapper } from 'google-maps-react';
 import ReactDOM from 'react-dom';
 
 export class GoogleMap extends Component {
-  state = { key: "" }
+  state = { key: '' }
   componentWillMount(){
     this.fetchKey();
   }
