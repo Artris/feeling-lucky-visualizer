@@ -2,6 +2,8 @@
 
 A simple visualization app that uses React + D3 to help students find a place close to school and cheap to rent!
 
+[![feeling lucky demo](https://media.giphy.com/media/5QTLkgJX8aCkSDcTbv/giphy.gif)](https://youtu.be/MMSIa5Yd2Es)
+
 ## How to get started
 
 First, you need to update the `config.json` file and provide your Google Maps API key, a target URL and the CSS selectors you care about.
