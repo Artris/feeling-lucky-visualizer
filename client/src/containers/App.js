@@ -18,12 +18,12 @@ const App = props => {
       <CircularProgress style={{ color: blue[500] }} size={100} />
     );
   } else if (error === true) {
-    elm = wrapInNotice(<p className="noteice-text">Something is worng</p>);
+    elm = wrapInNotice(<p>Something is worng</p>);
   } else if (fetched === false) {
-    elm = wrapInNotice(<p className="notice-text">Select your destination</p>);
+    elm = wrapInNotice(<p>Select your destination</p>);
   } else if (nodata === true) {
     elm = wrapInNotice(
-      <p className="notice-text">No available houses for this destination</p>
+      <p>No available houses for this destination</p>
     );
   } else {
     elm = <Dashboard />;

@@ -1,7 +1,5 @@
 .notice {
   text-align: center;
-}
-
-.notice-text {
-  font-size: 4em;
+  font-size: 3em;
+  padding-top: 2em;
 }
