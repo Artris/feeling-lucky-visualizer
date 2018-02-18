@@ -1,6 +1,6 @@
 # Feeling Lucky
 
-A simple visualization app that uses React + D3 to help students find a place close to school and cheap to rent!
+A simple visualization app that uses React + D3 to help students find a place close to school and cheap to rent! __You can read more about it [here](https://medium.com/artris/feeling-lucky-part-1-extracting-data-from-a-tree-of-pages-73edf0ac6407)__
 
 [![feeling lucky demo](https://media.giphy.com/media/5QTLkgJX8aCkSDcTbv/giphy.gif)](https://youtu.be/MMSIa5Yd2Es)
 
